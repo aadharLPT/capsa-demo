@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Capsa Healthcare</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #1a2b4a;
+    --navy-dark: #111e35;
+    --teal: #00a9a5;
+    --teal-light: #e6f7f7;
+    --orange: #f5a623;
+    --orange-dark: #e09415;
+    --white: #ffffff;
+    --gray-light: #f7f8fa;
+    --gray-mid: #e8eaed;
+    --gray-text: #6b7280;
+    --body-text: #3d4a5c;
+    --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  }
+
+  body { font-family: var(--font); color: var(--body-text); background: var(--white); }
+  a { text-decoration: none; color: inherit; }
+  img { max-width: 100%; }
+
+  /* ── TOPBAR ── */
+  .topbar {
+    background: var(--navy-dark);
+    color: #b0bac9;
+    font-size: 12px;
+    padding: 6px 40px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 20px;
+    align-items: center;
+  }
+  .topbar a { color: #b0bac9; }
+  .topbar a:hover { color: var(--white); }
+  .topbar-divider { opacity: 0.3; }
+
+  /* ── NAVBAR ── */
+  nav {
+    background: var(--white);
+    border-bottom: 1px solid var(--gray-mid);
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 70px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .logo-icon {
+    width: 44px;
+    height: 44px;
+    background: var(--navy);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .logo-icon svg { width: 28px; height: 28px; }
+  .logo-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+  }
+  .logo-text span:first-child {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--navy);
+    letter-spacing: 1px;
+  }
+  .logo-text span:last-child {
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: var(--teal);
+    text-transform: uppercase;
+  }
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    list-style: none;
+  }
+  .nav-links li a {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--navy);
+    padding: 8px 14px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    transition: color 0.2s;
+  }
+  .nav-links li a:hover { color: var(--teal); }
+  .nav-links li a .chevron {
+    font-size: 10px;
+    opacity: 0.5;
+  }
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .nav-icon { font-size: 16px; color: var(--navy); cursor: pointer; padding: 6px; }
+  .btn-contact {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--navy);
+    border: 1.5px solid var(--navy);
+    padding: 7px 16px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+    transition: all 0.2s;
+  }
+  .btn-contact:hover { background: var(--navy); color: var(--white); }
+  .btn-quote {
+    font-size: 12px;
+    font-weight: 700;
+    background: var(--orange);
+    color: var(--white);
+    padding: 8px 18px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+    transition: background 0.2s;
+  }
+  .btn-quote:hover { background: var(--orange-dark); }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    height: 420px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, #0d1d33 0%, #1a3a5c 40%, #2a5f80 100%);
+  }
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(10,20,40,0.55) 0%, rgba(10,20,40,0.3) 100%);
+  }
+  /* Decorative circles */
+  .hero-circle {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .hero-circle.c1 { width: 500px; height: 500px; top: -150px; right: -100px; }
+  .hero-circle.c2 { width: 300px; height: 300px; bottom: -100px; left: 50px; }
+  /* Blurred shapes */
+  .hero-blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.18;
+  }
+  .hero-blob.b1 { width: 400px; height: 400px; background: var(--teal); top: -100px; right: 100px; }
+  .hero-blob.b2 { width: 300px; height: 300px; background: #3a7bd5; bottom: -50px; left: 200px; }
+  /* People silhouette suggestion */
+  .hero-silhouette {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 200px;
+    background: linear-gradient(to top, rgba(5,15,30,0.4) 0%, transparent 100%);
+  }
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: var(--white);
+    padding: 0 20px;
+  }
+  .hero-content h1 {
+    font-size: 38px;
+    font-weight: 700;
+    line-height: 1.25;
+    margin-bottom: 28px;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.3);
+  }
+  .hero-btns {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .hero-btn-primary {
+    background: var(--orange);
+    color: var(--white);
+    font-size: 13px;
+    font-weight: 700;
+    padding: 11px 28px;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    letter-spacing: 0.3px;
+    transition: background 0.2s;
+  }
+  .hero-btn-primary:hover { background: var(--orange-dark); }
+  .hero-btn-secondary {
+    background: transparent;
+    color: var(--white);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 10px 28px;
+    border-radius: 25px;
+    border: 2px solid rgba(255,255,255,0.7);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .hero-btn-secondary:hover { border-color: var(--white); background: rgba(255,255,255,0.1); }
+  .arrow-icon { font-size: 14px; }
+
+  /* ── INTRO SECTION ── */
+  .intro {
+    padding: 64px 40px;
+    text-align: center;
+    max-width: 760px;
+    margin: 0 auto;
+  }
+  .intro h2 {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--teal);
+    margin-bottom: 18px;
+  }
+  .intro p {
+    font-size: 14px;
+    line-height: 1.8;
+    color: var(--gray-text);
+  }
+  .intro p strong { color: var(--body-text); }
+
+  /* ── FEATURE ROWS ── */
+  .features { padding: 0 0 80px; }
+
+  .feature-row {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    min-height: 340px;
+  }
+  .feature-row.reverse { flex-direction: row-reverse; }
+
+  .feature-visual {
+    flex: 0 0 48%;
+    background: var(--gray-light);
+    height: 340px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+  .feature-row.reverse .feature-visual { background: #eef4fb; }
+  .feature-row:nth-child(3) .feature-visual { background: #edf7f7; }
+
+  /* Illustrated placeholder visuals */
+  .visual-illustration {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .feature-content {
+    flex: 0 0 52%;
+    padding: 48px 56px;
+  }
+  .feature-eyebrow {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 3px;
+    margin-bottom: 16px;
+  }
+  .eyebrow-blue { background: #dbeeff; color: #1a5fa8; }
+  .eyebrow-orange { background: #fff0d6; color: #b86f00; }
+  .eyebrow-teal { background: #d6f5f4; color: #007a76; }
+  .eyebrow-purple { background: #ece8ff; color: #5a3ea1; }
+
+  .feature-content h3 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 14px;
+    line-height: 1.3;
+  }
+  .feature-content p {
+    font-size: 14px;
+    line-height: 1.8;
+    color: var(--gray-text);
+    margin-bottom: 20px;
+  }
+  .feature-link {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--teal);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.2s;
+  }
+  .feature-link:hover { border-color: var(--teal); }
+  .feature-links { display: flex; flex-direction: column; gap: 8px; }
+
+  /* Connector arc between rows */
+  .connector {
+    display: flex;
+    justify-content: center;
+    padding: 12px 0;
+  }
+  .connector svg { opacity: 0.25; }
+
+  /* ── EXPLORE BANNER ── */
+  .explore-banner {
+    background: var(--navy);
+    padding: 40px;
+    text-align: center;
+  }
+  .btn-explore {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--teal);
+    color: var(--white);
+    font-size: 13px;
+    font-weight: 700;
+    padding: 13px 32px;
+    border-radius: 25px;
+    letter-spacing: 0.5px;
+    transition: background 0.2s;
+  }
+  .btn-explore:hover { background: #008e8a; }
+
+  /* ── SVG Illustrations ── */
+  .illus-poc svg,
+  .illus-med svg,
+  .illus-pharmacy svg { width: 260px; height: 260px; }
+</style>
+</head>
+<body>
+
+<!-- Topbar -->
+<div class="topbar">
+  <a href="#">🌐 EN</a>
+  <span class="topbar-divider">|</span>
+  <a href="#">🛒 0</a>
+  <span class="topbar-divider">|</span>
+  <a href="#">Contact Us ↓</a>
+</div>
+
+<!-- Navbar -->
+<nav>
+  <div class="logo">
+    <div class="logo-icon">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="3" y="3" width="10" height="10" rx="2" fill="#00a9a5"/>
+        <rect x="15" y="3" width="10" height="10" rx="2" fill="#00a9a5" opacity="0.6"/>
+        <rect x="3" y="15" width="10" height="10" rx="2" fill="#00a9a5" opacity="0.6"/>
+        <rect x="15" y="15" width="10" height="10" rx="2" fill="#00a9a5" opacity="0.3"/>
+      </svg>
+    </div>
+    <div class="logo-text">
+      <span>CAPSA</span>
+      <span>HEALTHCARE</span>
+    </div>
+  </div>
+
+  <ul class="nav-links">
+    <li><a href="#">Clinical Workflow <span class="chevron">▾</span></a></li>
+    <li><a href="#">Pharmacy Automation <span class="chevron">▾</span></a></li>
+    <li><a href="#">Supply Chain <span class="chevron">▾</span></a></li>
+    <li><a href="#">Resources <span class="chevron">▾</span></a></li>
+    <li><a href="#">About <span class="chevron">▾</span></a></li>
+  </ul>
+
+  <div class="nav-actions">
+    <span class="nav-icon">🔍</span>
+    <a href="#" class="btn-contact">CONTACT US ↓</a>
+    <a href="#" class="btn-quote">REQUEST A QUOTE</a>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-blob b1"></div>
+  <div class="hero-blob b2"></div>
+  <div class="hero-circle c1"></div>
+  <div class="hero-circle c2"></div>
+  <div class="hero-silhouette"></div>
+  <div class="hero-content">
+    <h1>Engineering a Path to<br>Better Care</h1>
+    <div class="hero-btns">
+      <a href="#" class="hero-btn-primary">REQUEST A QUOTE <span class="arrow-icon">→</span></a>
+      <a href="#" class="hero-btn-secondary">EXPLORE PRODUCTS <span class="arrow-icon">→</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- Intro -->
+<div class="intro">
+  <h2>End-to-End Healthcare Solutions</h2>
+  <p>Across the healthcare continuum, Capsa stands out as the leader in purposefully designed, integrated solutions for <strong>pharmacy automation, medication management,</strong> and <strong>point-of-care</strong> technologies. Capsa has partnered with healthcare providers for more than 60 years to engineer innovative answers for complex challenges. Our solutions <strong>optimize workflows, streamline repetitive tasks,</strong> and improve clinical efficiency. From automating pharmacy operations to enhancing patient engagement, Capsa is engineering a path to better care.</p>
+</div>
+
+<!-- Feature Rows -->
+<div class="features">
+
+  <!-- Row 1: Point of Care -->
+  <div class="feature-row">
+    <div class="feature-visual">
+      <div class="visual-illustration illus-poc">
+        <svg viewBox="0 0 260 260" xmlns="http://www.w3.org/2000/svg">
+          <!-- Hospital bed -->
+          <rect x="30" y="150" width="200" height="12" rx="3" fill="#c8d8e8"/>
+          <rect x="40" y="120" width="160" height="32" rx="6" fill="#dce8f5"/>
+          <!-- Pillow -->
+          <ellipse cx="80" cy="125" rx="30" ry="12" fill="#fff" stroke="#c0d0e0" stroke-width="1.5"/>
+          <!-- Patient -->
+          <ellipse cx="80" cy="108" rx="18" ry="18" fill="#f5c5a3"/>
+          <rect x="65" y="120" width="35" height="28" rx="4" fill="#a8c4e0"/>
+          <!-- Monitor stand -->
+          <rect x="170" y="60" width="4" height="92" fill="#8aa0b8"/>
+          <rect x="155" y="56" width="34" height="26" rx="4" fill="#1a2b4a"/>
+          <rect x="158" y="59" width="28" height="19" rx="2" fill="#00d4d0" opacity="0.3"/>
+          <!-- Monitor line -->
+          <polyline points="160,68 164,68 167,62 170,74 173,65 176,68 180,68" fill="none" stroke="#00d4d0" stroke-width="1.5" stroke-linecap="round"/>
+          <!-- IV stand -->
+          <rect x="195" y="50" width="3" height="110" fill="#b0b8c4"/>
+          <rect x="185" y="48" width="23" height="3" rx="1" fill="#b0b8c4"/>
+          <rect x="193" y="52" width="7" height="30" rx="3" fill="#d6eeff" stroke="#a0c0e0" stroke-width="1"/>
+          <line x1="197" y1="82" x2="197" y2="130" stroke="#c0d8f0" stroke-width="1" stroke-dasharray="3,3"/>
+          <!-- Wheels -->
+          <circle cx="55" cy="163" r="6" fill="#8aa0b8"/>
+          <circle cx="195" cy="163" r="6" fill="#8aa0b8"/>
+          <!-- Medical cross -->
+          <rect x="112" y="82" width="14" height="40" rx="2" fill="#e8f5e8" stroke="#5cb85c" stroke-width="1.5"/>
+          <rect x="105" y="89" width="28" height="14" rx="2" fill="#e8f5e8" stroke="#5cb85c" stroke-width="1.5"/>
+          <rect x="116" y="86" width="6" height="32" fill="#5cb85c" opacity="0.5"/>
+          <rect x="109" y="93" width="20" height="6" fill="#5cb85c" opacity="0.5"/>
+        </svg>
+      </div>
+    </div>
+    <div class="feature-content">
+      <span class="feature-eyebrow eyebrow-blue">Point of Care</span>
+      <h3>Redefining Patient Care</h3>
+      <p>Capsa partners with providers to support compassionate care through purposefully designed, integrated solutions that help teams focus on patients rather than processes.</p>
+      <div class="feature-links">
+        <a href="#" class="feature-link">MORE ABOUT POINT OF CARE →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Connector -->
+  <div class="connector">
+    <svg width="40" height="60" viewBox="0 0 40 60">
+      <path d="M 20 0 Q 40 30 20 60" fill="none" stroke="#1a2b4a" stroke-width="2"/>
+    </svg>
+  </div>
+
+  <!-- Row 2: Medication Management -->
+  <div class="feature-row reverse">
+    <div class="feature-visual">
+      <div class="visual-illustration illus-med">
+        <svg viewBox="0 0 260 260" xmlns="http://www.w3.org/2000/svg">
+          <!-- Cart body -->
+          <rect x="60" y="80" width="110" height="130" rx="6" fill="#dce8f5" stroke="#b0c8e0" stroke-width="1.5"/>
+          <!-- Cart drawers -->
+          <rect x="68" y="92" width="94" height="24" rx="3" fill="#b8d4f0" stroke="#90b8e0" stroke-width="1"/>
+          <rect x="68" y="122" width="94" height="24" rx="3" fill="#b8d4f0" stroke="#90b8e0" stroke-width="1"/>
+          <rect x="68" y="152" width="94" height="24" rx="3" fill="#b8d4f0" stroke="#90b8e0" stroke-width="1"/>
+          <rect x="68" y="182" width="94" height="20" rx="3" fill="#b8d4f0" stroke="#90b8e0" stroke-width="1"/>
+          <!-- Drawer handles -->
+          <rect x="106" y="101" width="20" height="5" rx="2.5" fill="#8aa8cc"/>
+          <rect x="106" y="131" width="20" height="5" rx="2.5" fill="#8aa8cc"/>
+          <rect x="106" y="161" width="20" height="5" rx="2.5" fill="#8aa8cc"/>
+          <rect x="106" y="188" width="20" height="5" rx="2.5" fill="#8aa8cc"/>
+          <!-- Cart top -->
+          <rect x="58" y="70" width="114" height="14" rx="4" fill="#1a2b4a"/>
+          <!-- Screen on cart -->
+          <rect x="68" y="48" width="60" height="30" rx="4" fill="#1a2b4a"/>
+          <rect x="71" y="51" width="54" height="24" rx="2" fill="#001428"/>
+          <polyline points="74,63 80,63 83,57 86,69 89,60 92,63 116,63" fill="none" stroke="#00d4d0" stroke-width="1.5" stroke-linecap="round"/>
+          <rect x="93" y="78" width="4" height="10" fill="#1a2b4a"/>
+          <rect x="85" y="86" width="20" height="3" rx="1" fill="#8aa0b8"/>
+          <!-- Handle -->
+          <rect x="168" y="100" width="8" height="60" rx="4" fill="#8aa0b8"/>
+          <!-- Wheels -->
+          <circle cx="80" cy="218" r="9" fill="#8aa0b8"/>
+          <circle cx="150" cy="218" r="9" fill="#8aa0b8"/>
+          <circle cx="80" cy="218" r="4" fill="#607080"/>
+          <circle cx="150" cy="218" r="4" fill="#607080"/>
+          <!-- Person silhouette -->
+          <ellipse cx="200" cy="90" rx="16" ry="16" fill="#f5c5a3"/>
+          <rect x="187" y="105" width="30" height="50" rx="4" fill="#3a6fa8"/>
+          <rect x="193" y="155" width="10" height="30" rx="3" fill="#2a5080"/>
+          <rect x="207" y="155" width="10" height="30" rx="3" fill="#2a5080"/>
+        </svg>
+      </div>
+    </div>
+    <div class="feature-content">
+      <span class="feature-eyebrow eyebrow-orange">Medication Management</span>
+      <h3>Supporting Medication Management</h3>
+      <p>Capsa's medication management solutions are designed to support medication workflows, improve organization, and help care teams manage medications more efficiently.</p>
+      <div class="feature-links">
+        <a href="#" class="feature-link">MORE ABOUT MEDICATION MANAGEMENT →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Connector -->
+  <div class="connector">
+    <svg width="40" height="60" viewBox="0 0 40 60">
+      <path d="M 20 0 Q 0 30 20 60" fill="none" stroke="#1a2b4a" stroke-width="2"/>
+    </svg>
+  </div>
+
+  <!-- Row 3: Pharmacy Automation -->
+  <div class="feature-row">
+    <div class="feature-visual">
+      <div class="visual-illustration illus-pharmacy">
+        <svg viewBox="0 0 260 260" xmlns="http://www.w3.org/2000/svg">
+          <!-- Counter / dispensing machine -->
+          <rect x="30" y="100" width="120" height="130" rx="6" fill="#dce8f5" stroke="#b0c8e0" stroke-width="1.5"/>
+          <rect x="30" y="100" width="120" height="20" rx="6" fill="#1a2b4a"/>
+          <!-- Machine screen -->
+          <rect x="40" y="128" width="100" height="50" rx="4" fill="#001428"/>
+          <rect x="43" y="131" width="94" height="44" rx="2" fill="#001e38"/>
+          <!-- Screen content bars -->
+          <rect x="48" y="137" width="60" height="6" rx="2" fill="#00a9a5" opacity="0.7"/>
+          <rect x="48" y="148" width="40" height="4" rx="2" fill="#4da8d4" opacity="0.5"/>
+          <rect x="48" y="157" width="50" height="4" rx="2" fill="#4da8d4" opacity="0.5"/>
+          <rect x="48" y="166" width="30" height="4" rx="2" fill="#4da8d4" opacity="0.3"/>
+          <!-- Machine slots -->
+          <rect x="40" y="185" width="100" height="10" rx="2" fill="#b0c8e0"/>
+          <rect x="40" y="200" width="100" height="10" rx="2" fill="#b0c8e0"/>
+          <rect x="40" y="215" width="44" height="10" rx="2" fill="#b0c8e0"/>
+          <rect x="96" y="215" width="44" height="10" rx="2" fill="#b0c8e0"/>
+          <!-- Machine legs / base -->
+          <rect x="50" y="228" width="20" height="10" rx="2" fill="#8aa0b8"/>
+          <rect x="110" y="228" width="20" height="10" rx="2" fill="#8aa0b8"/>
+
+          <!-- Person 1 (nurse) -->
+          <ellipse cx="185" cy="105" rx="15" ry="15" fill="#f5c5a3"/>
+          <rect x="173" y="118" width="24" height="45" rx="4" fill="#5a9ed4"/>
+          <rect x="178" y="163" width="9" height="28" rx="3" fill="#3a7ab0"/>
+          <rect x="190" y="163" width="9" height="28" rx="3" fill="#3a7ab0"/>
+          <!-- Arms -->
+          <rect x="164" y="120" width="9" height="30" rx="4" fill="#5a9ed4" transform="rotate(-15 168 120)"/>
+          <rect x="197" y="120" width="9" height="28" rx="4" fill="#5a9ed4" transform="rotate(10 201 120)"/>
+          <!-- Nurse hat / cross -->
+          <rect x="178" y="92" width="14" height="8" rx="2" fill="#fff" stroke="#e0e0e0" stroke-width="1"/>
+          <rect x="184" y="89" width="2" height="14" fill="#e05555"/>
+          <rect x="180" y="96" width="10" height="2" fill="#e05555"/>
+
+          <!-- Person 2 (pharmacist) -->
+          <ellipse cx="230" cy="115" rx="13" ry="13" fill="#d4a07a"/>
+          <rect x="219" y="126" width="22" height="40" rx="4" fill="#fff" stroke="#d0d8e0" stroke-width="1"/>
+          <rect x="224" y="166" width="8" height="24" rx="3" fill="#c0c8d0"/>
+          <rect x="234" y="166" width="8" height="24" rx="3" fill="#c0c8d0"/>
+          <!-- Clipboard -->
+          <rect x="208" y="132" width="14" height="18" rx="2" fill="#fff" stroke="#b0b8c8" stroke-width="1"/>
+          <rect x="213" y="130" width="4" height="4" rx="1" fill="#8898a8"/>
+          <line x1="210" y1="137" x2="220" y2="137" stroke="#c0c8d8" stroke-width="1"/>
+          <line x1="210" y1="141" x2="220" y2="141" stroke="#c0c8d8" stroke-width="1"/>
+          <line x1="210" y1="145" x2="216" y2="145" stroke="#c0c8d8" stroke-width="1"/>
+        </svg>
+      </div>
+    </div>
+    <div class="feature-content">
+      <span class="feature-eyebrow eyebrow-teal">Pharmacy Automation</span>
+      <h3>Reimagining Pharmacy Operations</h3>
+      <p>Capsa's pharmacy automation represents an end-to-end range of technologies for inventory management, prescription dispensing, central filling, controlled meds handling, and will-call management.</p>
+      <div class="feature-links">
+        <a href="#" class="feature-link">MORE ABOUT PHARMACY AUTOMATION →</a>
+        <a href="#" class="feature-link">MORE ABOUT CENTRAL FILL →</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Explore Banner -->
+<div class="explore-banner">
+  <a href="#" class="btn-explore">EXPLORE PRODUCTS →</a>
+</div>
+
+</body>
+</html>
