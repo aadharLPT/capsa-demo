@@ -617,29 +617,24 @@
 </div>
 
 <script type='text/javascript'>
-  window.addEventListener("onEmbeddedMessagingReady", () => {
-    embeddedservice_bootstrap.userVerificationAPI.clearSession()
-      .then(() => console.log("Previous session cleared"))
-      .catch((err) => console.error("clearSession failed", err));
-  });
+	function initEmbeddedMessaging() {
+		try {
+			embeddedservice_bootstrap.settings.language = 'en_US'; // For example, enter 'en' or 'en-US'
 
-  function initEmbeddedMessaging() {
-    try {
-      embeddedservice_bootstrap.settings.language = 'en_US';
-      embeddedservice_bootstrap.init(
-        '00DdM00000snasr',
-        'Github_Messaging_Setting',
-        'https://orgfarm-de15fd5464-dev-ed.develop.my.site.com/ESWGithubMessagingSetti1785850391847',
-        {
-          scrt2URL: 'https://orgfarm-de15fd5464-dev-ed.develop.my.salesforce-scrt.com'
-        }
-      );
-    } catch (err) {
-      console.error('Error loading Embedded Messaging: ', err);
-    }
-  };
+			embeddedservice_bootstrap.init(
+				'00DdM00000snasr',
+				'Capsa_Assistant_Messaging_Channel',
+				'https://orgfarm-de15fd5464-dev-ed.develop.my.site.com/ESWCapsaAssistantMessag1786030027076',
+				{
+					scrt2URL: 'https://orgfarm-de15fd5464-dev-ed.develop.my.salesforce-scrt.com'
+				}
+			);
+		} catch (err) {
+			console.error('Error loading Embedded Messaging: ', err);
+		}
+	};
 </script>
-<script type='text/javascript' src='https://orgfarm-de15fd5464-dev-ed.develop.my.site.com/ESWGithubMessagingSetti1785850391847/assets/js/bootstrap.min.js' onload='initEmbeddedMessaging()'></script>
+<script type='text/javascript' src='https://orgfarm-de15fd5464-dev-ed.develop.my.site.com/ESWCapsaAssistantMessag1786030027076/assets/js/bootstrap.min.js' onload='initEmbeddedMessaging()'></script>
 
 </body>
 </html>
